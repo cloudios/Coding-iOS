@@ -400,8 +400,8 @@ typedef enum {
     if (!_menuItems.count)
         return nil;
  
-    const CGFloat kMinMenuItemHeight = 44.f;
-    const CGFloat kMinMenuItemWidth = 44.f;
+    const CGFloat kMinMenuItemHeight = 50.f;
+    const CGFloat kMinMenuItemWidth = 50.f;
     const CGFloat kMarginX = 6.f;
     const CGFloat kMarginY = 0.f;
     
@@ -444,6 +444,7 @@ typedef enum {
     }
        
     maxItemWidth  = MAX(maxItemWidth, kMinMenuItemWidth);
+    maxItemWidth = MAX(maxItemWidth, maxItemWidth * (kScreen_Width/ 375));
     maxItemHeight = MAX(maxItemHeight, kMinMenuItemHeight);
 
     const CGFloat titleX = kMarginX * 2 + maxImageWidth + titleImagePadding;
@@ -537,13 +538,8 @@ typedef enum {
         }
         
         if (itemNum < _menuItems.count - 1) {
-//            UIView *lineView=[UIView new];
-//            lineView.backgroundColor=[UIColor colorWithHexString:@"0xffffff" andAlpha:0.2];
-//            lineView.frame=CGRectMake(0, maxItemHeight + 0.3, 160, 0.5);
-//            [itemView addSubview:lineView];
             itemY += 2;
         }
-        
         itemY += maxItemHeight;
         ++itemNum;
     }    

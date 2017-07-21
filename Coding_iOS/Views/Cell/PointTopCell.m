@@ -17,7 +17,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor clearColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         if (!_valueL) {
             _valueL = [UILabel new];
@@ -28,7 +27,7 @@
         }
         if (!_titleL) {
             _titleL = [UILabel new];
-            _titleL.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _titleL.textColor = kColor999;
             _titleL.font = [UIFont systemFontOfSize:12];
             _titleL.textAlignment = NSTextAlignmentCenter;
             [self.contentView addSubview:_titleL];

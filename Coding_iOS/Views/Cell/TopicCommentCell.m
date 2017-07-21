@@ -15,13 +15,16 @@
 
 #import "MJPhotoBrowser.h"
 #import "Coding_NetAPIManager.h"
+#import "HtmlMediaViewController.h"
 
 @interface TopicCommentCell ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 @property (strong, nonatomic) UIImageView *ownerIconView;
 @property (strong, nonatomic) UIView *bestAnswerV;
-@property (strong, nonatomic) UIButton *voteBtn;
+@property (strong, nonatomic) UIButton *voteBtn, *voteBtnBig;
 @property (strong, nonatomic) UILabel *timeLabel;
 @property (strong, nonatomic) UICustomCollectionView *imageCollectionView;
+@property (strong, nonatomic) UIButton *detailBtn;
+
 @end
 
 @implementation TopicCommentCell
@@ -31,10 +34,9 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor clearColor];
         if (!_bestAnswerV) {
             _bestAnswerV = [[UIView alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, 0, 80, 24)];
-            _bestAnswerV.backgroundColor = kColorBrandGreen;
+            _bestAnswerV.backgroundColor = [UIColor colorWithHexString:@"0x2FAEEA"];
             UIImageView *imageV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_best_answer"]];
             [_bestAnswerV addSubview:imageV];
             UILabel *label = [UILabel labelWithSystemFontSize:11 textColorHexString:@"0xFFFFFF"];
@@ -61,15 +63,19 @@
         }
         if (!_voteBtn) {
             _voteBtn = [[UIButton alloc] initWithFrame:CGRectMake(kPaddingLeftWidth + 1.5, _ownerIconView.bottom, 30, 18)];
-            [_voteBtn doBorderWidth:0.5 color:nil cornerRadius:2.0];
+            [_voteBtn doBorderWidth:0.5 color:kColorCCC cornerRadius:2.0];
             _voteBtn.titleLabel.font = [UIFont systemFontOfSize:11];
             [_voteBtn addTarget:self action:@selector(voteBtnClicked) forControlEvents:UIControlEventTouchUpInside];
             [self.contentView addSubview:_voteBtn];
+            
+            _voteBtnBig = [[UIButton alloc] initWithFrame:CGRectInset(_voteBtn.frame, -10, -5)];
+            [_voteBtnBig addTarget:self action:@selector(voteBtnClicked) forControlEvents:UIControlEventTouchUpInside];
+            [self.contentView insertSubview:_voteBtnBig belowSubview:_voteBtn];
         }
         CGFloat curWidth = kScreen_Width - 40 - 2*kPaddingLeftWidth;
         if (!_contentLabel) {
             _contentLabel = [[UITTTAttributedLabel alloc] initWithFrame:CGRectMake(kPaddingLeftWidth + 40, curBottomY, curWidth, 30)];
-            _contentLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _contentLabel.textColor = kColor222;
             _contentLabel.font = kTopicCommentCell_FontContent;
             _contentLabel.linkAttributes = kLinkAttributes;
             _contentLabel.activeLinkAttributes = kLinkAttributesActive;
@@ -79,7 +85,7 @@
         CGFloat commentBtnWidth = 40;
         if (!_timeLabel) {
             _timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPaddingLeftWidth +40, 0, curWidth- commentBtnWidth, 20)];
-            _timeLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _timeLabel.textColor = kColor999;
             _timeLabel.font = [UIFont systemFontOfSize:12];
             [self.contentView addSubview:_timeLabel];
         }
@@ -96,8 +102,25 @@
                 [self.contentView addSubview:self.imageCollectionView];
             }
         }
+        if (!_detailBtn) {
+            _detailBtn = [UIButton buttonWithTitle:@"查看详情" titleColor:kColorBrandGreen];
+            _detailBtn.titleLabel.font = [UIFont systemFontOfSize:12];
+            [_detailBtn addTarget:self action:@selector(goToDetail) forControlEvents:UIControlEventTouchUpInside];
+            [self.contentView addSubview:_detailBtn];
+            [_detailBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.size.mas_equalTo(CGSizeMake(60, 30));
+                make.right.equalTo(self.contentView).offset(-10);
+                make.centerY.equalTo(_timeLabel);
+            }];
+        }
+        _timeLabel.lineBreakMode = NSLineBreakByTruncatingMiddle;
     }
     return self;
+}
+
+- (void)goToDetail{
+    HtmlMediaViewController *vc = [HtmlMediaViewController instanceWithHtmlMedia:self.toComment.htmlMedia title:[NSString stringWithFormat:@"%@ 的评论", self.toComment.owner.name]];
+    [BaseViewController goToVC:vc];
 }
 
 - (void)voteBtnClicked{
@@ -110,8 +133,8 @@
 }
 
 - (void)setVoteCount:(NSNumber *)voteCount isVoted:(BOOL)isVoted{
-    [_voteBtn setBackgroundColor:isVoted? kColorBrandGreen: [UIColor whiteColor]];
-    [_voteBtn setTitleColor:[UIColor colorWithHexString:isVoted? @"0xFFFFFF": @"0x999999"] forState:UIControlStateNormal];
+    [_voteBtn setBackgroundColor:[UIColor colorWithHexString:isVoted? @"0x2EBE76": @"0xFFFFFF"]];
+    [_voteBtn setTitleColor:[UIColor colorWithHexString:isVoted? @"0xFFFFFF": @"0x666666"] forState:UIControlStateNormal];
     [_voteBtn setTitle:[NSString stringWithFormat:@"+%@", voteCount] forState:UIControlStateNormal];
 }
 
@@ -121,6 +144,7 @@
     if (!_toComment) {
         return;
     }
+    _detailBtn.hidden = ![self.toComment.htmlMedia needToShowDetail];
     CGFloat curBottomY = 15;
     CGFloat curWidth = kScreen_Width - 40 - 2*kPaddingLeftWidth;
     
@@ -131,6 +155,7 @@
     
     _ownerIconView.y = _contentLabel.y = curBottomY;
     _voteBtn.y = _ownerIconView.bottom + 5;
+    _voteBtnBig.y = _voteBtn.y - 5;
     [self setVoteCount:_toComment.up_vote_counts isVoted:_toComment.is_up_voted.boolValue];
     [_ownerIconView sd_setImageWithURL:[_toComment.owner.avatar urlImageWithCodePathResizeToView:_ownerIconView] placeholderImage:kPlaceholderMonkeyRoundView(_ownerIconView)];
     [_contentLabel setLongString:_toComment.content withFitWidth:curWidth];
@@ -154,12 +179,13 @@
     curBottomY += [TopicCommentCell imageCollectionViewHeightWithCount:imagesCount];
     
     [_timeLabel setY:curBottomY];
+    _timeLabel.width = _detailBtn.hidden? kScreen_Width - 40 - 2*kPaddingLeftWidth: kScreen_Width - 40 - 2*kPaddingLeftWidth - 60;
     _timeLabel.text = [NSString stringWithFormat:@"%@ 发布于 %@", _toComment.owner.name, [_toComment.created_at stringDisplay_HHmm]];
 }
 
 - (void)setIsAnswer:(BOOL)isAnswer{
     _isAnswer = isAnswer;
-    _ownerIconView.hidden = _voteBtn.hidden = !_isAnswer;
+    _ownerIconView.hidden = _voteBtn.hidden = _voteBtnBig.hidden = !_isAnswer;
     _contentLabel.textColor = [UIColor colorWithHexString:_isAnswer? @"0x222222": @"0x666666"];
 }
 

@@ -22,7 +22,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.backgroundColor = kColorTableBG;
         if (!_imgView) {
             _imgView = [UIImageView new];
@@ -36,7 +36,7 @@
         if (!_titleLabel) {
             _titleLabel = [UILabel new];
             _titleLabel.font = [UIFont systemFontOfSize:15];
-            _titleLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _titleLabel.textColor = kColor222;
             [self.contentView addSubview:_titleLabel];
             [_titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(_imgView.mas_right).offset(15);
@@ -48,7 +48,7 @@
             self.rightLabel = [UILabel new];
             self.rightLabel.text = @"添加";
             self.rightLabel.font = [UIFont systemFontOfSize:15];
-            //[self.rightLabel setTextColor:[UIColor colorWithHexString:@"0x999999"]];
+            //[self.rightLabel setTextColor:kColor999];
             [self.contentView addSubview:self.rightLabel];
             [self.rightLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                 //make.left.equalTo(_imgView.mas_right).offset(15);
@@ -65,6 +65,18 @@
                 make.centerY.equalTo(self.contentView);
             }];
         }
+        UIView *rightSideV = [UIView new];
+        [self.contentView addSubview:rightSideV];
+        [rightSideV mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.right.bottom.equalTo(self.contentView);
+            make.width.equalTo(self.contentView).multipliedBy(1.0/4);
+        }];
+        __weak typeof(self) weakSelf = self;
+        [rightSideV bk_whenTapped:^{
+            if (weakSelf.rightSideClickedBlock) {
+                weakSelf.rightSideClickedBlock();
+            }
+        }];
     }
     return self;
 }
@@ -109,18 +121,18 @@
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         if([hasLikeMr isEqual:@1]) {
             self.rightLabel.text = @"+1";
-            [self.rightLabel setTextColor:[UIColor colorWithHexString:@"0x3BBD79"]];
+            [self.rightLabel setTextColor:kColorBrandGreen];
             [self.likeImgView setHidden:NO];
             self.likeImgView.image = [UIImage imageNamed:@"EPointLikeHead"];
         } else {
-            [self.rightLabel setTextColor:[UIColor colorWithHexString:@"0x3BBD79"]];
+            [self.rightLabel setTextColor:kColorBrandGreen];
             self.rightLabel.text = @"撤销 +1";
             [self.likeImgView setHidden:YES];
         }
     } else {
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         self.rightLabel.text = @"添加";
-        [self.rightLabel setTextColor:[UIColor colorWithHexString:@"0x999999"]];
+        [self.rightLabel setTextColor:kColor999];
         [self.likeImgView setHidden:YES];
     }
 }
@@ -128,7 +140,6 @@
 -(void) cantReviewer {
     self.rightLabel.hidden = YES;
     self.likeImgView.hidden = YES;
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.accessoryType = UITableViewCellAccessoryNone;
 }
 

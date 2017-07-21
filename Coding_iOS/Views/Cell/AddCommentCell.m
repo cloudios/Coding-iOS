@@ -27,12 +27,12 @@
         if (!_contentL) {
             _contentL = [UILabel new];
             _contentL.font = [UIFont systemFontOfSize:15];
-            _contentL.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _contentL.textColor = kColor222;
             _contentL.text = @"添加评论";
             [self.contentView addSubview:_contentL];
         }
         [_iconView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.size.mas_equalTo(CGSizeMake(20, 20));
+            make.size.mas_equalTo(CGSizeMake(22, 22));
             make.centerY.equalTo(self.contentView);
             make.centerX.equalTo(self.contentView).offset(-50);
         }];

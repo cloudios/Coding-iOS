@@ -214,8 +214,8 @@
         curMember = [_myMemberArray objectAtIndex:indexPath.row];
     }
     __weak typeof(self) weakSelf = self;
-    cell.curMember = curMember;
     cell.type = _type;
+    cell.curMember = curMember;
     if (_type == ProMemTypeProject) {
         [cell setRightUtilityButtons:[self rightButtonsWithObj:curMember] WithButtonWidth:[MemberCell cellHeight]];//编辑按钮
         cell.delegate = self;
@@ -330,7 +330,7 @@
     }
     if (canDelete) {
         [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithHexString:@"0xF0F0F0"] icon:[UIImage imageNamed:@"member_cell_edit_type"]];
-        [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithHexString:@"0xff5846"] icon:[UIImage imageNamed:@"member_cell_edit_remove"]];
+        [rightUtilityButtons sw_addUtilityButtonWithColor:kColorBrandRed icon:[UIImage imageNamed:@"member_cell_edit_remove"]];
     }
     return rightUtilityButtons;
 }

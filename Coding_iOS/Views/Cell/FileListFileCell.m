@@ -18,7 +18,7 @@
 
 
 @interface FileListFileCell ()<ASProgressPopUpViewDelegate>
-@property (strong, nonatomic) UIImageView *iconView;
+@property (strong, nonatomic) UIImageView *iconView, *shareLogoV;
 @property (strong, nonatomic) UILabel *nameLabel, *infoLabel, *sizeLabel;
 @property (strong, nonatomic) UIButton *stateButton;
 
@@ -31,30 +31,38 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-        self.backgroundColor = [UIColor clearColor];
         if (!_iconView) {
             _iconView = [[YLImageView alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, ([FileListFileCell cellHeight] - kFileListFileCell_IconWidth)/2, kFileListFileCell_IconWidth, kFileListFileCell_IconWidth)];
             _iconView.layer.masksToBounds = YES;
             _iconView.layer.cornerRadius = 2.0;
             _iconView.layer.borderWidth = 0.5;
-            _iconView.layer.borderColor = [UIColor colorWithHexString:@"0xdddddd"].CGColor;
+            _iconView.layer.borderColor = kColorDDD.CGColor;
             [self.contentView addSubview:_iconView];
+        }
+        if (!_shareLogoV) {
+            _shareLogoV = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_file_share_logo"]];
+            _shareLogoV.hidden = YES;
+            [_iconView addSubview:_shareLogoV];
+            [_shareLogoV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.size.mas_equalTo(CGSizeMake(20, 20));
+                make.top.right.equalTo(_iconView);
+            }];
         }
         if (!_nameLabel) {
             _nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(kFileListFileCell_LeftPading, kFileListFileCell_TopPading, (kScreen_Width - kFileListFileCell_LeftPading - 60), 25)];
-            _nameLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _nameLabel.textColor = kColor222;
             _nameLabel.font = [UIFont systemFontOfSize:16];
             [self.contentView addSubview:_nameLabel];
         }
         if (!_sizeLabel) {
             _sizeLabel = [[UILabel alloc] initWithFrame:CGRectMake(kFileListFileCell_LeftPading, ([FileListFileCell cellHeight]- 15)/2+3, (kScreen_Width - kFileListFileCell_LeftPading - 60), 15)];
-            _sizeLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _sizeLabel.textColor = kColor999;
             _sizeLabel.font = [UIFont systemFontOfSize:12];
             [self.contentView addSubview:_sizeLabel];
         }
         if (!_infoLabel) {
             _infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(kFileListFileCell_LeftPading, ([FileListFileCell cellHeight]- 15 - kFileListFileCell_TopPading), (kScreen_Width - kFileListFileCell_LeftPading - 60), 15)];
-            _infoLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _infoLabel.textColor = kColor999;
             _infoLabel.font = [UIFont systemFontOfSize:12];
             [self.contentView addSubview:_infoLabel];
         }
@@ -97,7 +105,7 @@
             stateImageName = @"icon_file_state_download";
             break;
     }
-    [self setBackgroundColor:(state == DownloadStateDownloaded)? [UIColor colorWithHexString:@"0xf1fcf6"]:[UIColor clearColor]];
+    [self setBackgroundColor:(state == DownloadStateDownloaded)? [UIColor colorWithHexString:@"0xf1fcf6"]:[UIColor whiteColor]];
     [self.progressView setHidden:!(state == DownloadStateDownloading || state == DownloadStatePausing)];
     
     [_stateButton setImage:[UIImage imageNamed:stateImageName] forState:UIControlStateNormal];
@@ -108,6 +116,7 @@
     if (!_file) {
         return;
     }
+    _shareLogoV.hidden = !_file.share;
     _nameLabel.text = _file.name;
     _sizeLabel.text = [NSString sizeDisplayWithByte:_file.size.floatValue];
     _infoLabel.text = [NSString stringWithFormat:@"%@ 创建于 %@", _file.owner.name, [_file.created_at stringDisplay_HHmm]];

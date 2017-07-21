@@ -29,7 +29,7 @@
         // Initialization code
         self.items = @[@{@"all":@""},@{@"created":@""},@{@"joined":@""},@{@"watched":@""},@{@"stared":@""}].mutableCopy;
         self.pCount=[ProjectCount new];
-        self.showStatus=FALSE;
+        self.showStatus= NO;
         [self setup];
     }
     return self;
@@ -111,7 +111,7 @@
 
 #pragma mark -- event & action
 - (void)showMenuAtView:(UIView *)containerView {
-    _showStatus=TRUE;
+    _showStatus= YES;
     [containerView addSubview:self];
     [_realTimeBlur showBlurViewAtView:self];
     [_tableview reloadData];
@@ -123,7 +123,7 @@
     if ([[presentView.subviews firstObject] isMemberOfClass:NSClassFromString(@"RDVTabBar")]) {
         [presentView bringSubviewToFront:[presentView.subviews firstObject]];
     }
-    _showStatus=FALSE;
+    _showStatus= NO;
     [_realTimeBlur disMiss];
 }
 
@@ -217,17 +217,17 @@
     titleLab.font=[UIFont systemFontOfSize:15];
     [cell.contentView addSubview:titleLab];
     if (indexPath.section==0) {
-        titleLab.textColor=(indexPath.row==_selectNum)?[UIColor colorWithHexString:@"0x3BBD79"]:[UIColor colorWithHexString:@"0x222222"];
+        titleLab.textColor=(indexPath.row==_selectNum)?kColorBrandGreen:kColor222;
         titleLab.text=[self formatTitleStr:[_items objectAtIndex:indexPath.row]];
     }else if (indexPath.section==1) {
         if(indexPath.row==0){
             [titleLab removeFromSuperview];
             UIView *seperatorLine=[[UIView alloc] initWithFrame:CGRectMake(20, 15, self.bounds.size.width-40, 0.5)];
-            seperatorLine.backgroundColor=[UIColor colorWithHexString:@"0xcccccc"];
+            seperatorLine.backgroundColor=kColorCCC;
             [cell.contentView addSubview:seperatorLine];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
         }else{
-            titleLab.textColor=(indexPath.row+kfirstRowNum==_selectNum)?[UIColor colorWithHexString:@"0x3BBD79"]:[UIColor colorWithHexString:@"0x222222"];
+            titleLab.textColor=(indexPath.row+kfirstRowNum==_selectNum)?kColorBrandGreen:kColor222;
             titleLab.text=[self formatTitleStr:[_items objectAtIndex:3+indexPath.row-1]];
         }
     }else
@@ -235,7 +235,7 @@
         if(indexPath.row==0){
             [titleLab removeFromSuperview];
             UIView *seperatorLine=[[UIView alloc] initWithFrame:CGRectMake(20, 15, self.bounds.size.width-40, 0.5)];
-            seperatorLine.backgroundColor=[UIColor colorWithHexString:@"0xcccccc"];
+            seperatorLine.backgroundColor=kColorCCC;
             [cell.contentView addSubview:seperatorLine];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
         }else{

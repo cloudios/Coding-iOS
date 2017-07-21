@@ -80,7 +80,8 @@ typedef NS_ENUM(NSInteger, AnalyseMethodType) {
 
 - (void)viewDidLoad{
     [super viewDidLoad];
-    self.view.backgroundColor = kColorTableBG;
+//    self.view.backgroundColor = kColorTableBG;
+    self.view.backgroundColor = kColorTableSectionBg;
     
     if (self.interfaceOrientation != UIInterfaceOrientationPortrait
         && !([self supportedInterfaceOrientations] & UIInterfaceOrientationMaskLandscapeLeft)) {
@@ -419,6 +420,15 @@ typedef NS_ENUM(NSInteger, AnalyseMethodType) {
         viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:viewController action:@selector(dismissModalVC)];
     }
     [[self presentingVC] presentViewController:nav animated:YES completion:nil];
+}
++ (void)goToVC:(UIViewController *)viewController{
+    if (!viewController) {
+        return;
+    }
+    UINavigationController *nav = [self presentingVC].navigationController;
+    if (nav) {
+        [nav pushViewController:viewController animated:YES];
+    }
 }
 
 #pragma mark Login

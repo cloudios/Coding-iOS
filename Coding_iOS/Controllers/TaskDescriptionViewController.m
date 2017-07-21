@@ -27,6 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = kColorTableBG;
     if (!_segmentedControl) {
         _segmentedControl = ({
             UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"编辑", @"预览"]];
@@ -106,7 +107,7 @@
         _editView = [[EaseMarkdownTextView alloc] initWithFrame:self.view.bounds];
         _editView.curProject = self.curTask.project;
         _editView.backgroundColor = [UIColor clearColor];
-        _editView.textColor = [UIColor colorWithHexString:@"0x666666"];
+        _editView.textColor = kColor666;
         _editView.font = [UIFont systemFontOfSize:16];
         _editView.textContainerInset = UIEdgeInsetsMake(15, kPaddingLeftWidth - 5, 8, kPaddingLeftWidth - 5);
         _editView.placeholder = @"任务描述";

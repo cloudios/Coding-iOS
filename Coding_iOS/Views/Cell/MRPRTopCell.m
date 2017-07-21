@@ -37,13 +37,13 @@
         CGFloat curWidth = kScreen_Width - 2 * kPaddingLeftWidth;
         if (!_titleL) {
             _titleL = [[UILabel alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, 15,  curWidth, 30)];
-            _titleL.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _titleL.textColor = kColor222;
             _titleL.font = kMRPRTopCell_FontTitle;
             [self.contentView addSubview:_titleL];
         }
         if (!_timeL) {
             _timeL = [[UILabel alloc] initWithFrame:CGRectMake(kPaddingLeftWidth +25, 0, curWidth, 20)];
-            _timeL.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _timeL.textColor = kColor999;
             _timeL.font = [UIFont systemFontOfSize:12];
             [self.contentView addSubview:_timeL];
         }
@@ -63,9 +63,9 @@
         
         if (!_fromL) {
             _fromL = [UILabel new];
-            [_fromL doBorderWidth:0.5 color:[UIColor colorWithHexString:@"0x4E90BF"] cornerRadius:2.0];
+            [_fromL doBorderWidth:0.5 color:[UIColor colorWithHexString:@"0x76808E"] cornerRadius:2.0];
             _fromL.font = kMRPRTopCell_FontFromTo;
-            _fromL.textColor = [UIColor colorWithHexString:@"0x4E90BF"];
+            _fromL.textColor = [UIColor colorWithHexString:@"0x76808E"];
             [self.contentView addSubview:_fromL];
         }
         if (!_arrowIcon) {
@@ -75,9 +75,9 @@
         }
         if (!_toL) {
             _toL = [UILabel new];
-            [_toL doBorderWidth:0.5 color:[UIColor colorWithHexString:@"0x4E90BF"] cornerRadius:2.0];
+            [_toL doBorderWidth:0.5 color:[UIColor colorWithHexString:@"0x76808E"] cornerRadius:2.0];
             _toL.font = kMRPRTopCell_FontFromTo;
-            _toL.textColor = [UIColor colorWithHexString:@"0x4E90BF"];
+            _toL.textColor = [UIColor colorWithHexString:@"0x76808E"];
             [self.contentView addSubview:_toL];
         }
         
@@ -133,7 +133,11 @@
     
     _timeL.attributedText = [self attributeTail];
     _statusL.text =  _curMRPRInfo.mrpr.statusDisplay;
-    
+    _statusL.textColor = [UIColor colorWithHexString:(_curMRPRInfo.mrpr.status == MRPRStatusCanMerge? @"0x666666":
+                                                      _curMRPRInfo.mrpr.status == MRPRStatusCannotMerge? @"0xB89FDA":
+                                                      _curMRPRInfo.mrpr.status == MRPRStatusAccepted? @"0x32BE77":
+                                                      _curMRPRInfo.mrpr.status == MRPRStatusRefused? @"0xF56061":
+                                                      @"0xF56061")];
     NSString *fromStr, *toStr;
     if (_curMRPRInfo.mrpr.isMR) {
         fromStr = [NSString stringWithFormat:@"  %@  ", _curMRPRInfo.mrpr.srcBranch];
@@ -184,10 +188,10 @@
     NSString *timeStr = _curMRPRInfo.mrpr.created_at? [_curMRPRInfo.mrpr.created_at stringDisplay_HHmm]: @"";
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", nameStr, timeStr]];
     [attrString addAttributes:@{NSFontAttributeName : [UIFont boldSystemFontOfSize:12],
-                                NSForegroundColorAttributeName : [UIColor colorWithHexString:@"0x222222"]}
+                                NSForegroundColorAttributeName : kColor222}
                         range:NSMakeRange(0, nameStr.length)];
     [attrString addAttributes:@{NSFontAttributeName : [UIFont boldSystemFontOfSize:12],
-                                NSForegroundColorAttributeName : [UIColor colorWithHexString:@"0x999999"]}
+                                NSForegroundColorAttributeName : kColor999}
                         range:NSMakeRange(nameStr.length + 1, timeStr.length)];
     return attrString;
 }
@@ -237,7 +241,7 @@
 {
     self = [super init];
     if (self) {
-        self.backgroundColor = [UIColor colorWithHexString:@"0xfafafa"];
+        self.backgroundColor = kColorNavBG;
         self.frame = CGRectMake(kPaddingLeftWidth, 0, kScreen_Width - 2*kPaddingLeftWidth, kMRPRActionView_Height);
         if (!_icon) {
             _icon = [UIImageView new];
@@ -278,7 +282,7 @@
         case MRPRStatusAccepted:
             imageStr = @"mrpr_icon_accepted";
             contentStr = @"合并";
-            lineColorStr = @"0x3BBD79";
+            lineColorStr = @"0x2EBE76";
             break;
         case MRPRStatusRefused:
             imageStr = @"mrpr_icon_refaused";
@@ -298,10 +302,10 @@
     contentStr = [NSString stringWithFormat:@"%@ %@ %@了这个请求", userName, [actionDate stringDisplay_HHmm], contentStr];
     NSMutableAttributedString *attrContentStr = [[NSMutableAttributedString alloc] initWithString:contentStr];
     [attrContentStr addAttributes:@{NSFontAttributeName : [UIFont boldSystemFontOfSize:12],
-                                    NSForegroundColorAttributeName : [UIColor colorWithHexString:@"0x222222"]}
+                                    NSForegroundColorAttributeName : kColor222}
                             range:NSMakeRange(0, userName.length)];
     [attrContentStr addAttributes:@{NSFontAttributeName : [UIFont boldSystemFontOfSize:12],
-                                    NSForegroundColorAttributeName : [UIColor colorWithHexString:@"0x999999"]}
+                                    NSForegroundColorAttributeName : kColor999}
                             range:NSMakeRange(userName.length, attrContentStr.length - userName.length)];
     _contentL.attributedText = attrContentStr;
 }

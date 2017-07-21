@@ -28,7 +28,6 @@
     if (self) {
         // Initialization code
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        self.backgroundColor = [UIColor clearColor];
         if (!_projectIconView) {
             _projectIconView = [[UIImageView alloc] initWithFrame:CGRectMake(kPaddingLeftWidth, 10, kProjectListCell_IconHeight, kProjectListCell_IconHeight)];
             _projectIconView.layer.masksToBounds = YES;
@@ -38,18 +37,18 @@
 
         if (!_projectTitleLabel) {
             _projectTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kProjectListCell_ContentLeft, 10, 180, 25)];
-            _projectTitleLabel.textColor = [UIColor colorWithHexString:@"0x222222"];
+            _projectTitleLabel.textColor = kColor222;
             _projectTitleLabel.font = [UIFont systemFontOfSize:17];
             [self.contentView addSubview:_projectTitleLabel];
         }
         if (!_ownerTitleLabel) {
             _ownerTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kProjectListCell_ContentLeft, 40, 180, 25)];
-            _ownerTitleLabel.textColor = [UIColor colorWithHexString:@"0x999999"];
+            _ownerTitleLabel.textColor = kColor999;
             _ownerTitleLabel.font = [UIFont systemFontOfSize:15];
             [self.contentView addSubview:_ownerTitleLabel];
         }
         if (!_privateIconView) {
-            _privateIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_project_private_old"]];
+            _privateIconView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_project_private"]];
             _privateIconView.hidden = YES;
             [self.contentView addSubview:_privateIconView];
         }
@@ -113,11 +112,11 @@
 
 - (NSArray *)rightButtons{
     NSMutableArray *rightUtilityButtons = [NSMutableArray new];
-//    [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithHexString:_project.pin.boolValue? @"0xe6e6e6": @"0x3bbd79"]
+//    [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithHexString:_project.pin.boolValue? @"0xe6e6e6": @"0x2EBE76"]
 //                                                 icon:[UIImage imageNamed:_project.pin.boolValue? @"icon_project_cell_pin": @"icon_project_cell_nopin"]];
     
-    [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithHexString:_project.pin.boolValue? @"0xe6e6e6": @"0x3bbd79"]
-                                                title:_project.pin.boolValue?@"取消常用":@"设置常用" titleColor:[UIColor colorWithHexString:_project.pin.boolValue?@"0x3bbd79":@"0xffffff"]];
+    [rightUtilityButtons sw_addUtilityButtonWithColor:[UIColor colorWithHexString:_project.pin.boolValue? @"0xe6e6e6": @"0x2EBE76"]
+                                                title:_project.pin.boolValue?@"取消常用":@"设置常用" titleColor:[UIColor colorWithHexString:_project.pin.boolValue?@"0x2EBE76":@"0xffffff"]];
 
     return rightUtilityButtons;
 }

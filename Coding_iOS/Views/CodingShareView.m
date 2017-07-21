@@ -57,13 +57,13 @@
         }
         if (!_contentView) {
             _contentView = [UIView new];
-            _contentView.backgroundColor = [UIColor colorWithHexString:@"0xF0F0F0"];
+            _contentView.backgroundColor = kColorTableSectionBg;
             if (!_titleL) {
                 _titleL = ({
                     UILabel *label = [UILabel new];
                     label.textAlignment = NSTextAlignmentCenter;
                     label.font = [UIFont systemFontOfSize:14];
-                    label.textColor = [UIColor colorWithHexString:@"0x666666"];
+                    label.textColor = kColor666;
                     label;
                 });
                 [_contentView addSubview:_titleL];
@@ -565,7 +565,7 @@
             UILabel *label = [UILabel new];
             label.textAlignment = NSTextAlignmentCenter;
             label.font = [UIFont systemFontOfSize:12];
-            label.textColor = [UIColor colorWithHexString:@"0x666666"];
+            label.textColor = kColor666;
             label;
         });
         [self addSubview:_titleL];

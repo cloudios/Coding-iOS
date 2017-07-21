@@ -38,7 +38,7 @@
         [tableView registerClass:[LocalFolderCell class] forCellReuseIdentifier:kCellIdentifier_LocalFolderCell];
         tableView.sectionIndexBackgroundColor = [UIColor clearColor];
         tableView.sectionIndexTrackingBackgroundColor = [UIColor clearColor];
-        tableView.sectionIndexColor = [UIColor colorWithHexString:@"0x666666"];
+        tableView.sectionIndexColor = kColor666;
         [self.view addSubview:tableView];
         [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(self.view);
@@ -58,7 +58,7 @@
 
 - (void)refresh{
     BOOL hasData = [self findLocalFile];
-    [self.view configBlankPage:EaseBlankPageTypeView hasData:hasData hasError:NO reloadButtonBlock:nil];
+    [self.view configBlankPage:EaseBlankPageTypeFile hasData:hasData hasError:NO reloadButtonBlock:nil];
     if (!hasData) {
         [self.myRefreshControl endRefreshing];
         return;

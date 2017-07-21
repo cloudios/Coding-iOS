@@ -69,11 +69,11 @@
     
     _unselectedTitleAttributes = @{
                                    NSFontAttributeName: [UIFont systemFontOfSize:10],
-                                   NSForegroundColorAttributeName: [UIColor colorWithHexString:@"0x808080"],
+                                   NSForegroundColorAttributeName: [UIColor colorWithHexString:@"0x76808E"],
                                    };
     _selectedTitleAttributes = @{
                                  NSFontAttributeName: [UIFont systemFontOfSize:10],
-                                 NSForegroundColorAttributeName: [UIColor colorWithHexString:@"0x3BBD79"],
+                                 NSForegroundColorAttributeName: kColorBrandGreen,
                                  };
     
     _badgeBackgroundColor = [UIColor colorWithHexString:@"0xf75388"];
@@ -83,7 +83,7 @@
     }else{
         _badgeTextFont = [UIFont systemFontOfSize:11];
     }
-    _badgePositionAdjustment = UIOffsetMake(-4, 2);
+    _badgePositionAdjustment = UIOffsetMake(-6, 2);
 //    _badgePositionAdjustment = UIOffsetMake(右移量, 下移量);
 }
 
